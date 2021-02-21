@@ -1,0 +1,60 @@
+version: "3"
+
+networks:
+  exposed:
+    external: true
+  
+services:
+  traefik:
+    build: .
+    restart: always
+    command:
+      # enable docker as service provider for traefik
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+
+      # entry points for traefik
+      # should be at least 443 and 80 if traefik is only used for web applications
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      
+      # enable automatic let's encrypt with http challange for getting certificates
+      # https://letsencrypt.org/docs/challenge-types/
+      - "--certificatesresolvers.global.acme.httpchallenge=true"
+      - "--certificatesresolvers.global.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.global.acme.email=mail@akampf.dev"
+      - "--certificatesresolvers.global.acme.storage=${ACMESTORE}/acme.json"
+
+      # enable dashboard api
+      - "--api.dashboard=true"
+      
+    ports:
+    # expose the port for each entry point
+    - 80:80
+    - 443:443
+    
+    volumes:
+    - ./acme:${ACMESTORE}
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+    
+    networks:
+    - exposed
+    
+    labels:
+    # tell traefik to parse labels on this container
+    - "traefik.enable=true"
+    
+    # redirect the requests from all hosts on the web entrypoint to the websecure entrypoint
+    - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
+    - "traefik.http.routers.http-catchall.entrypoints=web"
+    - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
+    - "traefik.http.routers.http-catchall.middlewares=https-redirect"
+    
+    # enable traefik dashboard
+    # this can be used as a template for all services
+    # the DOMAIN env variable should be available globally on your system
+    - "traefik.http.routers.traefik.rule=Host(`proxy.${DOMAIN}`)"
+    - "traefik.http.routers.traefik.entrypoints=websecure"
+    - "traefik.http.routers.traefik.tls.certresolver=global"
+    - "traefik.http.routers.traefik.service=api@internal"
+    - "traefik.docker.network=exposed"

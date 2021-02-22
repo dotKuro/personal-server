@@ -4,3 +4,5 @@ updates:
     directory: "/traefik"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "07:38"

@@ -4,3 +4,5 @@ updates:
     directory: "/traefik"
     schedule:
       interval: "daily"
+    default_assignees:
+    - "dotKuro"

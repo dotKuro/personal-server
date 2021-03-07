@@ -26,7 +26,7 @@ services:
     restart: always
     volumes:
       - ./nextcloud/volume/:/var/www/html/
-    env_files:
+    env_file:
      - ./mariadb/secret.env
     environment:
      - MYSQL_HOST=mariadb
@@ -38,7 +38,7 @@ services:
     depends_on:
      - mariadb
      - redis
-    network:
+    networks:
       - default
       - exposed
     labels:

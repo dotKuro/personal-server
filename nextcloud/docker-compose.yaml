@@ -49,3 +49,14 @@ services:
       - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
       - "traefik.docker.network=exposed"
 
+  cron:
+    build: ./nextcloud
+    restart: always
+    volumes:
+     - ./nextcloud/volume/:/var/www/html/
+    entrypoint: /cron.sh
+    depends_on:
+      - mariadb
+      - redis
+  
+

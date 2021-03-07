@@ -18,3 +18,9 @@ updates:
       interval: "daily"
     assignees:
     - "dotKuro"
+  - package-ecosystem: "docker"
+    directory: "/nextcloud/nextcloud"
+    schedule:
+      interval: "daily"
+    assignees:
+    - "dotKuro"

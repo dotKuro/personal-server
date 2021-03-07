@@ -1,0 +1,20 @@
+version: "3"
+
+networks:
+  exposed:
+    external: true
+
+services:
+  mariadb:
+    build: ./mariadb
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: always
+    volumes:
+     - ./mariadb/volume/:/var/lib/mysql/
+    env_file:
+     - ./mariadb/.env
+    environment:
+     - MYSQL_DATABASE=nextcloud
+     - MYSQL_USER=nextcloud
+
+

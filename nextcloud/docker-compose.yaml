@@ -16,5 +16,9 @@ services:
     environment:
      - MYSQL_DATABASE=nextcloud
      - MYSQL_USER=nextcloud
+  
+  redis:
+    build: ./redis
+    restart: always
 
 

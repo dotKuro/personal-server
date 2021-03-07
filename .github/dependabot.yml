@@ -11,4 +11,10 @@ updates:
     schedule:
       interval: "daily"
     assignees:
+    - "dotkuro"
+  - package-ecosystem: "docker"
+    directory: "/nextcloud/redis"
+    schedule:
+      interval: "daily"
+    assignees:
     - "dotKuro"

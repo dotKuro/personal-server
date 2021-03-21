@@ -24,3 +24,9 @@ updates:
       interval: "daily"
     assignees:
     - "dotKuro"
+  - package-ecosystem: "docker"
+    directory: "/bitwarden"
+    schedule:
+      interval: "daily"
+    assignees:
+    - "dotKuro"

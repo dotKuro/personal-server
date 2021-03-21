@@ -1,0 +1,29 @@
+version: "3"
+
+networks:
+  exposed:
+    external: true
+  
+services:
+  bitwarden:
+    build: .
+    restart: always
+      
+    volumes:
+    - ./data/:/data/
+    
+    networks:
+    - exposed
+    
+    labels:
+    - "traefik.enable=true"
+    
+    - "traefik.http.routers.bitwarden.rule=Host(`passwords.${DOMAIN}`)"
+    - "traefik.http.routers.bitwarden.entrypoints=websecure"
+    - "traefik.http.routers.bitwarden.tls.certresolver=global"
+    - "traefik.http.services.bitwarden.loadbalancer.server.port=80"
+
+    - "traefik.docker.network=exposed"
+
+    env_file:
+    - ./secret.env

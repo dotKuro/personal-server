@@ -1,1 +1,1 @@
-FROM bitwardenrs/server:1.21.0
+FROM bitwardenrs/server:1.22.0

@@ -1,1 +1,1 @@
-FROM bitwardenrs/server:1.24.0
+FROM vaultwarden/server:1.28.1

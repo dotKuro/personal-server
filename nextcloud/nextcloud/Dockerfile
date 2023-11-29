@@ -1,1 +1,1 @@
-FROM nextcloud:25.0.4-apache
+FROM nextcloud:27.1.4-apache
